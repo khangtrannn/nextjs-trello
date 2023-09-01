@@ -16,12 +16,13 @@ function Modal() {
     state.closeModal,
   ]);
 
-  const [addTask, image, setImage, newTaskInput, setNewTaskInput] = useBoardStore((state) => [
+  const [addTask, image, setImage, newTaskInput, setNewTaskInput, newTaskType] = useBoardStore((state) => [
     state.addTask,
     state.image,
     state.setImage,
     state.newTaskInput,
     state.setNewTaskInput,
+    state.newTaskType,
   ]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -29,8 +30,7 @@ function Modal() {
 
     if (!newTaskInput) return;
 
-    // Add task
-
+    addTask(newTaskInput, newTaskType, image);
     setImage(null);
     closeModal();
   }
@@ -38,7 +38,7 @@ function Modal() {
   return (
     // Use the `Transition` component at the root level
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="form" onSubmit={e => handleSubmit(e)} className='relative z-10' onClose={closeModal}>
+      <Dialog as="form" onSubmit={handleSubmit} className='relative z-10' onClose={closeModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
